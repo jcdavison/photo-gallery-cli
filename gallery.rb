@@ -1,3 +1,9 @@
 file = ARGV[0]
 
-puts File.absolute_path(file)
+path =  File.absolute_path(file)
+
+def img_tag(path_to_file)
+  "<img src=\"#{path_to_file}\">"
+end
+
+puts img_tag(path)
