@@ -3,11 +3,29 @@ def html_page(content)
     <!DOCTYPE html>
     <html>
     <head>
+      <style>
+        body {
+          background-color: lightblue;
+        }
+        h1 {
+          color: pink;
+          text-align: center;
+        }
+        #pictures {
+        text-align: center;
+        }
+        img {
+        vertical-align: top;
+        border: 1px solid black;
+        }
+      </style>
       <title>My Gallery</title>
     </head>
     <body>
       <h1>My Gallery</h1>
-      #{content}
+      <div class="pictures" id ="pictures">
+        #{content}
+      </div>
     </body>
     </html>
   HTML
