@@ -1,62 +1,22 @@
-def html_page(content)
-  layout = <<-HTML
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <style>
-        body {
-          background-color: lightblue;
-        }
-        h1 {
-          color: pink;
-          text-align: center;
-        }
-        #pictures {
-        text-align: center;
-        }
-        img {
-        vertical-align: top;
-        border: 1px solid black;
-        }
-      </style>
-      <title>My Gallery</title>
-    </head>
-    <body>
-      <h1>My Gallery</h1>
-      <div class="pictures" id ="pictures">
-        #{content}
-      </div>
-    </body>
-    </html>
-  HTML
-  layout
-end
+require('./utils.rb')
 
-def img_tag(path_to_file)
-  "<img src=\"#{path_to_file}\">"
-end
+def create_gallery(gallery_dir, file_paths)
+  images_dir = File.join(gallery_dir, "images")
+  html_file = File.join(gallery_dir, "index.html")
 
-def list_of_images(images)
-  list_of_image_tags = []
-  images.each do |image|
-    list_of_image_tags.push(img_tag(image))
+  create_dir_if(gallery_dir)
+  create_dir_if(images_dir)
+
+  file_paths.each do |file|
+    FileUtils.cp(file, images_dir)
   end
-  list_of_image_tags
-end
-
-def list_of_file_paths(list_of_file_names)
-  absolute_file_paths = []
-  list_of_file_names.each do |file|
-    absolute_file_paths.push(File.absolute_path(file))
-  end
-  absolute_file_paths
+  img_tags = list_of_images(file_paths)
+  content = html_page(img_tags)
+  File.write(html_file, content)
 end
 
 
 if __FILE__ == $PROGRAM_NAME
-  images = ARGV
-  absolute_file_paths = list_of_file_paths(images)
-  images = list_of_images(absolute_file_paths)
-  content = images.join("\n")
-  puts html_page(content)
+  paths_to_images = ARGV
+  create_gallery("gallery", paths_to_images)
 end
